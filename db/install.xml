@@ -22,7 +22,8 @@
         <FIELD NAME="partiallycorrectfeedback" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="correctfeedbackformat" NEXT="partiallycorrectfeedbackformat"/>
         <FIELD NAME="partiallycorrectfeedbackformat" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="partiallycorrectfeedback" NEXT="incorrectfeedback"/>
         <FIELD NAME="incorrectfeedback" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="partiallycorrectfeedbackformat" NEXT="incorrectfeedbackformat"/>
-        <FIELD NAME="incorrectfeedbackformat" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="incorrectfeedback"/>
+        <FIELD NAME="incorrectfeedbackformat" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="incorrectfeedback" NEXT="penaltyfactor"/>
+        <FIELD NAME="penaltyfactor" TYPE="number" LENGTH="3" NOTNULL="false" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Penalty factor that decreases the student's grade for each box answered that was supposed to be empty" PREVIOUS="incorrectfeedbackformat"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="question"/>

@@ -108,6 +108,9 @@ class qtype_gapfill_edit_form extends question_edit_form {
                 array('size' => 70, 'rows' => 1), $this->editoroptions);
         $mform->addHelpButton('wronganswers', 'wronganswers', 'qtype_gapfill');
 
+        $mform->addElement('float', 'penaltyfactor', get_string('penaltyfactor', 'qtype_gapfill'));
+        $mform->addHelpButton('penaltyfactor', 'penaltyfactor', 'qtype_gapfill');
+
         /* Only allow plain text in for the comma delimited set of wrong answer values
          * wrong answers really should be a set of zero marked ordinary answers in the answers
          * table.

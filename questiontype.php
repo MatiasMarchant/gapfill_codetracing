@@ -53,7 +53,7 @@ class qtype_gapfill extends question_type {
      */
     public function extra_question_fields() {
         return ['question_gapfill', 'answerdisplay', 'delimitchars', 'casesensitive',
-            'noduplicates', 'disableregex', 'fixedgapsize', 'optionsaftertext', 'letterhints', 'singleuse'];
+            'noduplicates', 'disableregex', 'fixedgapsize', 'optionsaftertext', 'letterhints', 'singleuse', 'penaltyfactor'];
     }
 
 
@@ -97,9 +97,16 @@ class qtype_gapfill extends question_type {
             /* answer in this context means correct answers, i.e. where
              * fraction contains a 1 */
             if (strpos($a->fraction, '1') !== false) {
-                $question->answers[$a->id] = new question_answer($a->id, $a->answer, $a->fraction,
+                if($a->answer == "") {
+                    /* if it's an empty string, it shouldn't be counted
+                     * towards gapcount counter and its fraction should be 0
+                     */
+                    $question->answers[$a->id] = new question_answer($a->id, $a->answer, 0, $a->feedback, $a->feedbackformat);
+                } else {
+                    $question->answers[$a->id] = new question_answer($a->id, $a->answer, $a->fraction,
                         $a->feedback, $a->feedbackformat);
-                $question->gapcount++;
+                    $question->gapcount++;
+                }
                 if (!$forceplaintextanswers) {
                     $question->answers[$a->id]->answerformat = $a->answerformat;
                 }
@@ -266,6 +273,7 @@ class qtype_gapfill extends question_type {
             $options->optionsaftertext = '';
             $options->letterhints = '';
             $options->singleuse = '';
+            $options->penaltyfactor = 0.00;
             $options->id = $DB->insert_record('question_gapfill', $options);
         }
 
@@ -278,6 +286,7 @@ class qtype_gapfill extends question_type {
         $options->optionsaftertext = $question->optionsaftertext;
         $options->letterhints = $question->letterhints;
         $options->singleuse = $question->singleuse;
+        $options->penaltyfactor = $question->penaltyfactor;
 
         $options = $this->save_combined_feedback_helper($options, $question, $context, true);
         $DB->update_record('question_gapfill', $options);

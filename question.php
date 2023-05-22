@@ -436,6 +436,7 @@ class qtype_gapfill_question extends question_graded_automatically_with_countbac
      */
     public function get_num_parts_right(array $response) {
         $numright = 0;
+        $penalty = 0;
         foreach (array_keys($this->places) as $place) {
             $rightanswer = $this->get_right_choice_for($place);
             if (!isset($response[$this->field($place)])) {
@@ -452,8 +453,11 @@ class qtype_gapfill_question extends question_graded_automatically_with_countbac
             if ($this->compare_response_with_answer($answergiven, $rightanswer, $this->disableregex)) {
                 $numright++;
             }
+            if ($rightanswer == "" and $answergiven != "") {
+                $penalty++;
+            }
         }
-        return [$numright, $this->gapcount];
+        return [$numright, $this->gapcount, $penalty];
     }
 
     /**
@@ -517,8 +521,10 @@ class qtype_gapfill_question extends question_graded_automatically_with_countbac
      */
     public function grade_response(array $response) {
         $response = $this->discard_duplicates($response);
-        $right = $this->get_num_parts_right($response)[0];
-        $this->fraction = $right / $this->gapcount;
+        $right_and_penalty = $this->get_num_parts_right($response);
+        $right = $right_and_penalty[0];
+        $penalty = $right_and_penalty[2];
+        $this->fraction = ($right - ($penalty * floatval($this->penaltyfactor))) / $this->gapcount;
         $grade = array($this->fraction, question_state::graded_state_for_fraction($this->fraction));
         return $grade;
     }
@@ -597,6 +603,9 @@ class qtype_gapfill_question extends question_graded_automatically_with_countbac
         $answer = htmlspecialchars_decode($answer);
         $answergiven = htmlspecialchars_decode($answergiven);
 
+        if ($answer == "") {
+            return false;
+        }
         if ($disableregex == true) {
             /* use the | operator without regular expressions. Useful for
              * programming languages or math related questions which use

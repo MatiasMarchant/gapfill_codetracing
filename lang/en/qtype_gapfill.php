@@ -88,6 +88,8 @@ $string['letterhints'] = 'Letter hints';
 $string['singleuse'] = 'Single use draggables';
 $string['singleuse_text'] = 'Remove draggables from list when dropped into a gap';
 $string['singleuse_help'] = 'Remove draggables from list when dropped into a gap';
+$string['penaltyfactor'] = 'Penalty factor';
+$string['penaltyfactor_help'] = 'Penalty for answering a box that should be empty. Considering each correct answer is 1, this penalty will be subtracted to the sum of correct answers for each answer on a box that should be empty.';
 
 /* Used in the settings */
 $string['addhinttext'] = 'Add hint text to editing form';
