@@ -603,9 +603,6 @@ class qtype_gapfill_question extends question_graded_automatically_with_countbac
         $answer = htmlspecialchars_decode($answer);
         $answergiven = htmlspecialchars_decode($answergiven);
 
-        if ($answer == "") {
-            return false;
-        }
         if ($disableregex == true) {
             /* use the | operator without regular expressions. Useful for
              * programming languages or math related questions which use
