@@ -451,7 +451,9 @@ class qtype_gapfill_question extends question_graded_automatically_with_countbac
                 $rightanswer = core_text::strtolower($rightanswer, 'UTF-8');
             }
             if ($this->compare_response_with_answer($answergiven, $rightanswer, $this->disableregex)) {
-                $numright++;
+                if ($answergiven != "") {
+                    $numright++;
+                }
             }
             if ($rightanswer == "" and $answergiven != "") {
                 $penalty++;
